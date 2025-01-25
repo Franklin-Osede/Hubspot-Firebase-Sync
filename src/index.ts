@@ -7,7 +7,9 @@ export const syncUser = functions.https.onRequest(async (req, res) => {
     const result = await syncSingleUser(req.body.email);
     res.json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    // Corregido: especificar que 'error' es de tipo 'Error'
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    res.status(500).json({ error: errorMessage });
   }
 });
 
@@ -16,6 +18,8 @@ export const syncAll = functions.https.onRequest(async (req, res) => {
     const result = await syncAllContacts();
     res.json(result);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    // Corregido: especificar que 'error' es de tipo 'Error'
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    res.status(500).json({ error: errorMessage });
   }
 });
