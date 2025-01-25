@@ -1,0 +1,21 @@
+{
+  "functions": {
+    "source": "lib", 
+    "runtime": "nodejs16" 
+  },
+  "emulators": {
+    "functions": {
+      "host": "localhost",
+      "port": 5001 
+    },
+    "firestore": {
+      "host": "localhost",
+      "port": 8080 
+    },
+    "ui": {
+      "enabled": true, 
+      "host": "localhost",
+      "port": 4000 
+    }
+  }
+}
