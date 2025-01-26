@@ -17,6 +17,8 @@ export const updateUserHubspotData = async (email: string, hubspotData: any) => 
     }
     return { success: false, message: 'User not found' };
   } catch (error) {
-    return { success: false, error: error.message };
+    // Asegúrate de que error es de tipo Error antes de acceder a message
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    return { success: false, error: errorMessage };
   }
 };
