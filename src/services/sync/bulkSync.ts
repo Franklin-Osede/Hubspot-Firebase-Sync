@@ -20,6 +20,7 @@ export const syncAllContacts = async () => {
 
     return { success: true, processedCount, errorCount };
   } catch (error) {
-    throw new Error(`Bulk sync failed: ${error.message}`);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    throw new Error(`Bulk sync failed: ${errorMessage}`);
   }
 };
