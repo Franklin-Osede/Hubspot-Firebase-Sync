@@ -1,12 +1,18 @@
 import * as admin from 'firebase-admin';
 import { config } from '../utils/config';
 
-const app = admin.initializeApp();
+// Inicializa Firebase Admin SDK
+const app = admin.initializeApp({
+  projectId: config.firebase.projectId
+});
+
 export const db = admin.firestore();
 
+// Configura Firestore para usar el emulador si está habilitado
 if (config.firebase.useEmulator) {
- db.settings({
-   host: 'localhost:8080',
-   ssl: false
- });
+  db.settings({
+    host: 'localhost:8080',
+    ssl: false
+  });
+  console.log('Using Firestore emulator at localhost:8080');
 }
