@@ -1,0 +1,37 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "investments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "blockchain",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "numberInvestors",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "proyectStatus",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "investments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "hide",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "id",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

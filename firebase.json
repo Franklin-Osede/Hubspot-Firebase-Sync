@@ -1,21 +1,44 @@
 {
-  "functions": {
-    "source": "lib", 
-    "runtime": "nodejs16" 
-  },
+  "functions": [
+    {
+      "source": "lib",
+      "runtime": "nodejs16",
+      "codebase": "default"
+    },
+    {
+      "source": "hubspot-sync",
+      "codebase": "hubspot-sync",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local"
+      ],
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run lint",
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ],
   "emulators": {
     "functions": {
       "host": "localhost",
-      "port": 5001 
+      "port": 5001
     },
     "firestore": {
       "host": "localhost",
-      "port": 8080 
+      "port": 8080
     },
     "ui": {
-      "enabled": true, 
+      "enabled": true,
       "host": "localhost",
-      "port": 4000 
-    }
+      "port": 4000
+    },
+    "singleProjectMode": true
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
   }
 }

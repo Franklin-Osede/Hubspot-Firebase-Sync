@@ -1,0 +1,230 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  	match /{document=**} { allow create, update, delete, read: if false; }
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    // Write and Read
+    ///////////////////////////////////////////////////////////////////////////////
+    
+    match /users {
+    	allow read: if isSignedIn() && checkAdminRol();
+
+      
+      match /{uid} {
+      	allow create: if false;
+        allow update: if 
+        	(isSignedIn() && ((isOwner(uid) && isEmailVerified()) || checkAdminRol())) &&
+          (
+          	(!request.resource.data.diff(resource.data).affectedKeys().hasAny([
+          	'uid', 'kyc', 'email'
+          	]) || checkAdminRol()))
+        allow read: if isOwner(uid) || checkAdminRol();
+        allow delete: if checkAdminRol();
+      }
+    }
+    
+    match /numbersIdLegal {
+    	allow read: if checkAdminRol();
+    
+      match /{numId} { 
+      	allow create, update, delete, read: if checkAdminRol();
+      }
+  	}
+    
+    match /walletTraceability {
+    	allow create, update: if checkAdminRol();
+    	allow read: if checkAdminRol();
+      
+      match /{id} {
+      	allow create, update: if checkAdminRol();
+      	allow read: if checkAdminRol();
+      }
+    }
+    
+    match /users-walletsByCompany {
+    	allow read: if checkAdminRol();
+      
+      match /{uid} {
+      	allow read: if (isOwner(uid) && isEmailVerified()) || checkAdminRol();
+      }
+    }
+    
+    match /walletsByCompany {
+    	allow read: if checkAdminRol();
+      
+      match /{uid} {
+      	allow read: if checkAdminRol();
+        allow create, update, delete: if false;
+      }
+    }
+    
+    match /snapshots {
+    	allow read: if true;
+    
+      match /{token} { 
+      	allow create, update: if checkAdminRol();
+        allow delete: if false;
+        allow read: if true;
+      }
+  	}
+    
+    match /w-invest {
+    	allow read: if checkAdminRol();
+    
+      match /{token} { 
+        allow read: if checkAdminRol();
+        
+        match /{idSnapshot} { 
+          allow read: if checkAdminRol();
+          
+          match /{uid} { 
+            allow read: if checkAdminRol();
+          }
+        }
+      }
+  	}
+    
+        match /w-invest-tx {
+    	allow read: if true;
+    
+      match /{token} { 
+        allow read: if true;
+        
+        match /{idSnapshot} { 
+          allow read: if true;
+          
+          match /{uid} { 
+            allow read: if true;
+          }
+        }
+      }
+  	}
+    
+    match /investments {
+    	allow read: if true;
+    
+      match /{id} { 
+      	allow create, update: if checkAdminRol();
+        allow delete: if false;
+        allow read: if true;
+      }
+  	}
+    
+    match /user-investments {
+    	allow read: if checkAdminRol();
+    
+      match /{uid} { 
+      	allow create, update, delete, read: if (isOwner(uid) && isEmailVerified()) || checkAdminRol();
+      }
+  	}
+    
+    match /wallets-investment {
+    	allow read: if checkAdminRol();
+    
+      match /{id} { 
+      	allow read: if checkAdminRol();
+        
+        match /{uid} { 
+          allow read: if isOwner(uid) || checkAdminRol();
+          allow create, update, delete: if false;
+        }
+      }
+      
+  	}
+  
+    match /administrators {
+    	allow read: if checkAdminRol();
+    
+      match /{uid} { 
+      	allow create, update, delete, read: if checkAdminRol();
+      }
+  	}
+    
+    match /dapp {
+    	allow read: if true;
+    
+      match /{id} { 
+      	allow create, update: if checkAdminRol(); 
+        allow read: if true;
+      }
+  	}
+    
+    match /general-documentation {
+    	allow read: if true;
+      
+      match /{id} { 
+      	allow create, update, delete: if checkAdminRol(); 
+        allow read: if true;
+      }
+  	}
+    
+    match /pre-registerdata {
+    	allow read: if true;
+        match /{uid} {
+      	allow read,create,update,delete: if isOwner(uid) || checkAdminRol();
+      }
+    }
+    
+    match /transactions-mangopay{
+    	allow read:if true;
+      match /{uid} {
+      	allow read: if true
+        allow create,update,delete: if isOwner(uid) || checkAdminRol();
+      }
+    }
+
+    
+    match /dividends-mangopay {
+    	allow read: if true;
+        match /{uid} {
+      	allow create,update,delete: if isOwner(uid) || checkAdminRol();
+        allow read: if true;
+      }
+    }
+    
+      match /dividends-user {
+    	allow read: if true;
+        match /{uid} {
+      	allow create,update,delete: if isOwner(uid) || checkAdminRol();
+        allow read: if true;
+      }
+    }
+    
+     match /withdraws-mangopay {
+    	allow read: if checkAdminRol();
+        match /{uid} {
+      	allow create,update,delete, read: if checkAdminRol();
+      }
+    }
+    
+    match /user-tx-documents{
+    	  allow read: if true;
+        match /{uid} {
+      	allow create,update,delete, read: if true;
+      }
+    }
+    
+    
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    // Functions
+    ///////////////////////////////////////////////////////////////////////////////
+    
+    function isSignedIn() {
+    	return request.auth != null;
+    }
+    
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+    
+    function isEmailVerified() {
+      return request.auth.token.email_verified;
+    }
+    
+    function checkAdminRol() {
+      return isSignedIn() && request.auth.token.admin == true;
+    }
+  }
+}
