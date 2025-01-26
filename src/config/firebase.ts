@@ -2,7 +2,7 @@ import * as admin from 'firebase-admin';
 import { config } from '../utils/config';
 
 // Inicializa Firebase Admin SDK
-const app = admin.initializeApp({
+admin.initializeApp({
   projectId: config.firebase.projectId
 });
 

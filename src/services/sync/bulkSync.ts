@@ -8,7 +8,8 @@ export const syncAllContacts = async () => {
 
   try {
     do {
-      const response = await hubspotClient.crm.contacts.basicApi.getPage(25, after, ['email', 'ID de registro']);
+      const response: any = await hubspotClient.crm.contacts.basicApi.getPage(25, after, ['email', 'ID de registro']);
+
       for (const contact of response.results) {
         if (contact.properties.email) {
           const result = await updateUserHubspotData(contact.properties.email, contact);

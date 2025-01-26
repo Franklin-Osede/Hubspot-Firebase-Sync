@@ -4,11 +4,22 @@
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
-    "outDir": "./lib", // Carpeta donde se generará el código compilado
-    "rootDir": "./src", // Directorio raíz de tu código fuente
+    "moduleResolution": "node",
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
     "typeRoots": ["node_modules/@types"],
-    "skipLibCheck": true
+    "outDir": "./lib",
+    "rootDir": ".",         // Cambia rootDir para incluir todo el proyecto
+    "skipLibCheck": true,
+    "sourceMap": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "compileOnSave": true,
+  "include": [
+    "src/**/*",
+    "hubspot-sync/src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "lib"
+  ]
 }
