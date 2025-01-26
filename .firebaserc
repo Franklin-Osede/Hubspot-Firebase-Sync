@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "domoblock-dev", // Proyecto por defecto (desarrollo)
-    "development": "domoblock-dev", // Proyecto de desarrollo
-    "production": "domoblock-app" // Proyecto de producción
+    "default": "domoblock-devnew", 
+    "development": "domoblock-devnew", 
+    "production": "domoblock-dapp" 
   }
 }
